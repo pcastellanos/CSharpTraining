@@ -11,17 +11,25 @@ namespace CSharpTraining.Models
     {
         string name;
 
-        //public getter properties,then public setter too
-        public string Name { get { return name; } set { name = value; } }
+        //public get and private set
+        public string Name
+        {
+            get { return name; }
+            private set { name = value; }
+        }
 
         double price;
 
-        public double Price { get { return price; } }
+        public double Price
+        {
+            get { return price; }
+            private set { price = value; }
+        }
 
         public Product(string name, double price)
         {
-            this.name = name;
-            this.price = price;
+            Name = name;
+            Price = price;
         }
 
         public override string ToString()

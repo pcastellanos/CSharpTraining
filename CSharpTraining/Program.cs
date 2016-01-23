@@ -12,31 +12,24 @@ namespace CSharpTraining
     {
         public static void Main(string[] args)
         {
-            ArrayList products = GetSampleProducts();
-            int size = products.Count;
-            for(int i=0; i<size; i++)
+            List<Product> products = GetSampleProducts();
+           
+            foreach(Product product in products)
             {
-                Console.WriteLine(products[i].ToString());
+                Console.WriteLine(product.ToString());
             }
-            Console.Write("\n\n");
-
-            //foreach(Product product in products)
-            //{
-            //    Console.WriteLine(product.ToString());
-            //}
             Console.ReadLine();
         }
 
-        private static ArrayList GetSampleProducts()
+        private static List<Product> GetSampleProducts()
         {
             //Arraylist accept all kind of objects
-            ArrayList list = new ArrayList();
+            List<Product> list = new List<Product>();
             list.Add(new Product("West Side Story", 9.99));
             list.Add(new Product("Assassins", 14.99));
             list.Add(new Product("Frogs", 13.99));
             list.Add(new Product("Sweeney Todd", 10.99));
-            list.Add("Adición de un texto normal");
-            list.Add(12432424);
+            
             return list;
         }
 
