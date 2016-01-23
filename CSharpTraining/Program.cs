@@ -18,6 +18,12 @@ namespace CSharpTraining
             {
                 Console.WriteLine(products[i].ToString());
             }
+            Console.Write("\n\n");
+
+            //foreach(Product product in products)
+            //{
+            //    Console.WriteLine(product.ToString());
+            //}
             Console.ReadLine();
         }
 
@@ -29,8 +35,8 @@ namespace CSharpTraining
             list.Add(new Product("Assassins", 14.99));
             list.Add(new Product("Frogs", 13.99));
             list.Add(new Product("Sweeney Todd", 10.99));
-            //list.Add("Adición de un texto normal");
-            //list.Add(12432424);
+            list.Add("Adición de un texto normal");
+            list.Add(12432424);
             return list;
         }
 
