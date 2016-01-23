@@ -1,10 +1,6 @@
-﻿using CSharpTraining.Models;
+﻿using Entities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSharpTraining
 {
@@ -16,7 +12,8 @@ namespace CSharpTraining
            
             foreach(Product product in products)
             {
-                Console.WriteLine(product.ToString());
+                //using extension methods
+                Console.WriteLine(product.ToString() +" "+ product.TellAboutPrice());
             }
             Console.ReadLine();
         }
@@ -25,11 +22,10 @@ namespace CSharpTraining
         {
             //Arraylist accept all kind of objects
             List<Product> list = new List<Product>();
-            list.Add(new Product("West Side Story", 9.99));
-            list.Add(new Product("Assassins", 14.99));
-            list.Add(new Product("Frogs", 13.99));
-            list.Add(new Product("Sweeney Todd", 10.99));
-            
+            list.Add(new Product { Name = "West Side Story", Price = 9.99 });
+            list.Add(new Product { Name = "Assassins", Price = 14.99 });
+            list.Add(new Product { Name= "Frogs", Price =13.99 });
+            list.Add(new Product { Name = "Sweeney Todd", Price = 10.99 });
             return list;
         }
 
