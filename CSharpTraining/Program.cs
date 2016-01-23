@@ -10,6 +10,7 @@ namespace CSharpTraining
     {
         static void Main(string[] args)
         {
+
         }
     }
 }
