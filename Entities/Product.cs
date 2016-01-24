@@ -16,15 +16,15 @@ namespace Entities
             set;
         }
 
-        double price;
+        double? price;
 
-        public double Price
+        public double? Price
         {
             get { return price; }
             set { price = value; }
         }
 
-        public Product (string name, double price)
+        public Product (string name, double? price)
         {
             Name = name;
             Price = price;

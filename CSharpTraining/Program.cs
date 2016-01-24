@@ -12,9 +12,13 @@ namespace CSharpTraining
         {
             List<Product> products = GetSampleProducts();
             Action<Product> write = Console.WriteLine;
-            
+
             //Using lambda expression
-            products.FindAll(product => product.Price > 10).ForEach(write);
+            Console.WriteLine("Products with unknown price");
+            products.FindAll(delegate (Product p) { return !p.Price.HasValue; }).ForEach(write);
+            Console.Write("\n\n");
+            Console.WriteLine("Products with known price");
+            products.FindAll(product => product.Price.HasValue && product.Price > 10).ForEach(write);
             Console.Write("\n\n");
             Console.ReadLine();
         }
@@ -24,12 +28,12 @@ namespace CSharpTraining
             //Arraylist accept all kind of objects
             List<Product> list = new List<Product>();
             list.Add(new Product("West Side Story 2", 13.76));
-            list.Add(new Product("West Side Story", 9.99));
-            list.Add(new Product("Frogs", 13.99));
+            list.Add(new Product("West Side Story", null));
+            list.Add(new Product("Frogs", null));
             list.Add(new Product("Assassins", 14.99));
-            list.Add(new Product("Assassins 2", 24.23));
+            list.Add(new Product("Assassins 2", null));
             list.Add(new Product("Sweeney Todd", 10.99));
-            list.Add(new Product("Sweeney Todd", 5.99));
+            list.Add(new Product("Sweeney Todd",null));
             return list;
         }
 
