@@ -28,12 +28,12 @@ namespace CSharpTraining
             //Arraylist accept all kind of objects
             List<Product> list = new List<Product>();
             list.Add(new Product("West Side Story 2", 13.76));
-            list.Add(new Product("West Side Story", null));
-            list.Add(new Product("Frogs", null));
+            list.Add(new Product("West Side Story"));
+            list.Add(new Product("Frogs"));
             list.Add(new Product("Assassins", 14.99));
-            list.Add(new Product("Assassins 2", null));
+            list.Add(new Product("Assassins 2"));
             list.Add(new Product("Sweeney Todd", 10.99));
-            list.Add(new Product("Sweeney Todd",null));
+            list.Add(new Product("Sweeney Todd"));
             return list;
         }
 

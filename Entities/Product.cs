@@ -24,7 +24,7 @@ namespace Entities
             set { price = value; }
         }
 
-        public Product (string name, double? price)
+        public Product (string name, double? price=null)
         {
             Name = name;
             Price = price;
