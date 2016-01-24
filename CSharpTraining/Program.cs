@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CSharpTraining
 {
@@ -10,9 +11,11 @@ namespace CSharpTraining
         public static void Main(string[] args)
         {
             List<Product> products = GetSampleProducts();
-            products.FindAll(delegate (Product p) { return p.Price > 10; }).ForEach(Console.WriteLine);
-            Console.Write("\n\n");
+            Action<Product> write = Console.WriteLine;
             
+            //Using lambda expression
+            products.FindAll(product => product.Price > 10).ForEach(write);
+            Console.Write("\n\n");
             Console.ReadLine();
         }
 
