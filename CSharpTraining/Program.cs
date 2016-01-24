@@ -9,22 +9,22 @@ namespace CSharpTraining
     {
         public static void Main(string[] args)
         {
-            ArrayList products = GetSampleProducts();
+            List<Product> products = GetSampleProducts();
 
-            foreach (Product product in products)
-            {
-                if (product.Price >= 10)
-                    Console.WriteLine(product);
-            }
+            Predicate<Product> test = delegate (Product p) { return p.Price > 10; };
+            List<Product> matches = products.FindAll(test);
+            Action<Product> print = Console.WriteLine; //method group conversions that makes it easier to create delegates from existing methods.
+            matches.ForEach(print);
+
             Console.Write("\n\n");
             
             Console.ReadLine();
         }
 
-        private static ArrayList GetSampleProducts()
+        private static List<Product> GetSampleProducts()
         {
             //Arraylist accept all kind of objects
-            ArrayList list = new ArrayList();
+            List<Product> list = new List<Product>();
             list.Add(new Product("West Side Story 2", 13.76));
             list.Add(new Product("West Side Story", 9.99));
             list.Add(new Product("Frogs", 13.99));
