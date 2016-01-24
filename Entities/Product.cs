@@ -24,10 +24,12 @@ namespace Entities
             set { price = value; }
         }
 
-        public Product (string name, double? price=null)
+        public int IdSupplier { get; set; }
+        public Product (string name, int supplierId, double? price=null) //Optional parameter has to be at the end
         {
             Name = name;
             Price = price;
+            IdSupplier = supplierId;
         }
 
         public override string ToString()
