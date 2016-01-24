@@ -2,7 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace CSharpTraining
 {
@@ -10,15 +12,21 @@ namespace CSharpTraining
     {
         public static void Main(string[] args)
         {
-            List<Product> products = GetSampleProducts();
-            List<Supplier> suppliers = GetSampleSuppliers();
-
-            var filtered = from p in products
-                           join s in suppliers
-                           on p.IdSupplier equals s.Id
-                           where p.Price > 10
-                           orderby s.Name, p.Name
-                           select new { SupplierName = s.Name, ProductName = p.Name, IdSupplier = s.Id }; //Anonymous type
+            XDocument doc = XDocument.Load(@"..\..\File\Data.xml");
+            var filtered = from p in doc.Descendants("Product")
+                           join s in doc.Descendants("Supplier")
+                           on (int)p.Attribute("SupplierID")
+                           equals (int)s.Attribute("SupplierID")
+                           where (decimal)p.Attribute("Price") > 10
+                           orderby (string)s.Attribute("Name"),
+                           (string)p.Attribute("Name")
+                           select new
+                           {
+                               SupplierName = (string)s.Attribute("Name"),
+                               ProductName = (string)p.Attribute("Name"),
+                               IdSupplier = (int)s.Attribute("SupplierID")
+                           };
+            
 
             foreach (var result in filtered)
             {
@@ -26,6 +34,7 @@ namespace CSharpTraining
                 result.SupplierName, result.ProductName, result.IdSupplier);
             }
             
+
             Console.ReadLine();
         }
 
