@@ -10,12 +10,7 @@ namespace CSharpTraining
         public static void Main(string[] args)
         {
             List<Product> products = GetSampleProducts();
-
-            Predicate<Product> test = delegate (Product p) { return p.Price > 10; };
-            List<Product> matches = products.FindAll(test);
-            Action<Product> print = Console.WriteLine; //method group conversions that makes it easier to create delegates from existing methods.
-            matches.ForEach(print);
-
+            products.FindAll(delegate (Product p) { return p.Price > 10; }).ForEach(Console.WriteLine);
             Console.Write("\n\n");
             
             Console.ReadLine();
