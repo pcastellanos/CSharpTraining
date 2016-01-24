@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace CSharpTraining.Sorting
 {
-    public class ProductNameComparer : IComparer
+    public class ProductNameComparer : IComparer<Product>
     {
-        public int Compare(object x, object y)
+        public int Compare(Product first, Product second)
         {
-            Product first = (Product)x;
-            Product second = (Product)y;
             return first.Name.CompareTo(second.Name);
         }
     }

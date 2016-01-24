@@ -2,6 +2,7 @@
 using Entities;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace CSharpTraining
 {
@@ -9,10 +10,17 @@ namespace CSharpTraining
     {
         public static void Main(string[] args)
         {
-            ArrayList products = GetSampleProducts();
+            List<Product> products = GetSampleProducts();
             int size = products.Count;
-            //you have to use one IComparer to compare just by one thing
-            products.Sort(new ProductNameComparer());
+
+            //IComparer strongly type
+            //products.Sort(new ProductNameComparer());
+
+            //using delegate and avoiding extra class
+            products.Sort(delegate (Product first, Product second)
+            {
+                return first.Name.CompareTo(second.Name);
+            });
 
             for (int i = 0; i < size; i++)
             {
@@ -24,10 +32,10 @@ namespace CSharpTraining
             Console.ReadLine();
         }
 
-        private static ArrayList GetSampleProducts()
+        private static List<Product> GetSampleProducts()
         {
             //Arraylist accept all kind of objects
-            ArrayList list = new ArrayList();
+            List<Product> list = new List<Product>();
             list.Add(new Product("West Side Story", 9.99));
             list.Add(new Product("Assassins", 14.99));
             list.Add(new Product("Frogs", 13.99));
