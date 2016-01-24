@@ -1,5 +1,4 @@
-﻿using CSharpTraining.Sorting;
-using Entities;
+﻿using Entities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,24 +10,17 @@ namespace CSharpTraining
         public static void Main(string[] args)
         {
             List<Product> products = GetSampleProducts();
-            int size = products.Count;
 
-            //IComparer strongly type
-            //products.Sort(new ProductNameComparer());
+            //lambda expression. Implicit type (first, second)
+            //products.Sort((first, second) => first.Name.CompareTo(second.Name));
+            products.Sort((first, second) => first.Price.CompareTo(second.Price));
 
-            //using delegate and avoiding extra class
-            products.Sort(delegate (Product first, Product second)
+            foreach (Product product in products)
             {
-                return first.Name.CompareTo(second.Name);
-            });
-
-            for (int i = 0; i < size; i++)
-            {
-                Console.WriteLine(products[i]);
+                Console.WriteLine(product + " is " + product.TellAboutPrice());
             }
             Console.Write("\n\n");
-
-           
+            
             Console.ReadLine();
         }
 
