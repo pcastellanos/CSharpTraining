@@ -12,41 +12,26 @@ namespace CSharpTraining
     {
         public static void Main(string[] args)
         {
-            XDocument doc = XDocument.Load(@"..\..\File\Data.xml");
-            var filtered = from p in doc.Descendants("Product")
-                           join s in doc.Descendants("Supplier")
-                           on (int)p.Attribute("SupplierID")
-                           equals (int)s.Attribute("SupplierID")
-                           where (decimal)p.Attribute("Price") > 10
-                           orderby (string)s.Attribute("Name"),
-                           (string)p.Attribute("Name")
-                           select new
-                           {
-                               SupplierName = (string)s.Attribute("Name"),
-                               ProductName = (string)p.Attribute("Name"),
-                               IdSupplier = (int)s.Attribute("SupplierID")
-                           };
-            
 
-            foreach (var result in filtered)
-            {
-                Console.WriteLine("Supplier={0}; Product={1} idSupplier= {2}",
-                result.SupplierName, result.ProductName, result.IdSupplier);
-            }
+            dynamic dyn = 1;
+            object obj = 1; 
+            dyn = dyn + 3;
+            //obj = obj + 3;
             
+            Console.WriteLine(dyn.GetType());
+            Console.WriteLine(obj.GetType());
+
+            dynamic products = GetSampleProducts();
+
+            foreach(dynamic product in products)
+            {
+                Console.WriteLine(product.ToString());
+                //Console.WriteLine(product.LoQuesea);
+            }
+
+
 
             Console.ReadLine();
-        }
-
-        private static List<Supplier> GetSampleSuppliers()
-        {
-            List<Supplier> suppliers = new List<Supplier>();
-            suppliers.Add(new Supplier("Solely Sondheim", 1));
-            suppliers.Add(new Supplier("CD-by-CD-by-Sondheim", 2));
-            suppliers.Add(new Supplier("Barbershop CDs", 3));
-
-            return suppliers;
-
         }
 
         private static List<Product> GetSampleProducts()
