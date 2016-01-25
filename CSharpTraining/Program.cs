@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,33 +16,10 @@ namespace CSharpTraining
         public static void Main(string[] args)
         {
 
-            ExampleAsync();
+            List<Bill> bills = JsonConvert.DeserializeObject<List<Bill>>(JSON.Bills);
+
+       
         }
 
-        private static async void ExampleAsync()
-        {
-            Task demoWait = DoStuff();
-
-            for (int i=0; i<500; i++)
-            {
-                Console.WriteLine("Doing Stuff on the Main Thread "+i);
-            }
-
-            //await demoWait;
-            //Console.WriteLine("afsfafsdfsfsfkfsnfksnfkwnfwfnwenefmipedfikp");
-            Console.ReadLine();
-        }
-
-
-        private static async Task DoStuff()
-        {
-            await Task.Run(() =>
-            {
-                for (int counter = 0; counter < 1000; counter++)
-                {
-                    Console.WriteLine(counter);
-                }
-            });
-        }
     }
 }

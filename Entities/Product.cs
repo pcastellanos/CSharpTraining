@@ -10,31 +10,10 @@ namespace Entities
     {
 
         //Simplify get and set
-        public string Name
-        {
-            get;
-            set;
-        }
+        public string Name { get; set; }
+        
+        public double UnitPrice { get; set; }
+        public int Quantity { get; set; }
 
-        double? price;
-
-        public double? Price
-        {
-            get { return price; }
-            set { price = value; }
-        }
-
-        public int IdSupplier { get; set; }
-        public Product (string name, int supplierId, double? price=null) //Optional parameter has to be at the end
-        {
-            Name = name;
-            Price = price;
-            IdSupplier = supplierId;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("{0}: {1}", Name, Price);
-        }
     }
 }
