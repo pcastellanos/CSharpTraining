@@ -13,13 +13,20 @@ namespace CSharpTraining
     {
         static IEnumerable<int> CountWithTimeLimit(DateTime limit)
         {
-            for (int i = 1; i <= 100; i++)
+            try
             {
-                if (DateTime.Now >= limit)
+                for (int i = 1; i <= 100; i++)
                 {
-                    yield break;
+                    if (DateTime.Now >= limit)
+                    {
+                        yield break;
+                    }
+                    yield return i;
                 }
-                yield return i;
+            }
+            finally
+            {
+                Console.WriteLine("Stopping!");
             }
         }
 
