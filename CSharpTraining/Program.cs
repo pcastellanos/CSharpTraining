@@ -11,28 +11,25 @@ namespace CSharpTraining
 {
     class Program
     {
+        static IEnumerable<int> CountWithTimeLimit(DateTime limit)
+        {
+            for (int i = 1; i <= 100; i++)
+            {
+                if (DateTime.Now >= limit)
+                {
+                    yield break;
+                }
+                yield return i;
+            }
+        }
+
         public static void Main(string[] args)
         {
-            object[] values = { "a", "b", "c"};
-            IterationSample collection = new IterationSample(values, 0);
-            IEnumerator
-                iterator = collection.GetEnumerator();
-            Console.WriteLine("Starting to iterate");
-            Console.ReadLine();
-
-            while (true)
+            DateTime stop = DateTime.Now.AddSeconds(2);
+            foreach (int i in CountWithTimeLimit(stop))
             {
-                Console.WriteLine("Calling MoveNext()...");
-                bool result = iterator.MoveNext();
-                Console.WriteLine("... MoveNext result={0}", result);
-                Console.ReadLine();
-                if (!result)
-                {
-                    break;
-                }
-                Console.WriteLine("Fetching Current...");
-                Console.WriteLine("... Current result={0}", iterator.Current);
-                Console.ReadLine();
+                Console.WriteLine("Received {0}", i);
+                Thread.Sleep(300);
             }
 
             Console.ReadLine();
