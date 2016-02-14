@@ -13,14 +13,30 @@ namespace CSharpTraining
     {
         public static void Main(string[] args)
         {
-            object[] values = { "a", "b", "c", "d", "e" };
-            IterationSample collection = new IterationSample(values, 3);
-            //foreach call GetEnumerator -> MoveNext -> Current and finally IDisposable (if it was implemented)
-            foreach (object x in collection)
-            {
-                Console.WriteLine(x);
-            }
+            object[] values = { "a", "b", "c"};
+            IterationSample collection = new IterationSample(values, 0);
+            IEnumerator
+                iterator = collection.GetEnumerator();
+            Console.WriteLine("Starting to iterate");
             Console.ReadLine();
+
+            while (true)
+            {
+                Console.WriteLine("Calling MoveNext()...");
+                bool result = iterator.MoveNext();
+                Console.WriteLine("... MoveNext result={0}", result);
+                Console.ReadLine();
+                if (!result)
+                {
+                    break;
+                }
+                Console.WriteLine("Fetching Current...");
+                Console.WriteLine("... Current result={0}", iterator.Current);
+                Console.ReadLine();
+            }
+
+            Console.ReadLine();
+
         }
 
     }

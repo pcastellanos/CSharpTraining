@@ -19,13 +19,26 @@ namespace CSharpTraining
             this.startingPoint = startingPoint;
         }
 
-        //You can use Generic to required the the type in the yield return stament  
+        
         public IEnumerator GetEnumerator()
         {
+
+            Console.WriteLine("Start of CreateEnumerable()");
+            string value ="";
             for (int index = 0; index < values.Length; index++)
             {
-                yield return values[(index + startingPoint) % values.Length];
+                value = values[(index + startingPoint) % values.Length].ToString();
+                Console.WriteLine("index {0} About to yield {1}", index, value);
+                yield return value;
+                Console.WriteLine("'{0}' After yield", value);
             }
+
+            Console.WriteLine("'{0}' Yielding final value", value);
+            yield return string.Empty;
+
+            Console.WriteLine("End of GetEnumerator()");
+
         }
+
     }
 }
