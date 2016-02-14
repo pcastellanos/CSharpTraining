@@ -27,6 +27,7 @@ namespace CSharpTraining
             finally
             {
                 Console.WriteLine("Stopping!");
+                //Console.ReadLine();
             }
         }
 
@@ -36,6 +37,11 @@ namespace CSharpTraining
             foreach (int i in CountWithTimeLimit(stop))
             {
                 Console.WriteLine("Received {0}", i);
+                if (i > 3)
+                {
+                    Console.WriteLine("Returning");
+                    return;
+                }
                 Thread.Sleep(300);
             }
 
