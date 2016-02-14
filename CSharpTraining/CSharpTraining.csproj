@@ -43,10 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IAggregate.cs" />
-    <Compile Include="IIterator.cs" />
-    <Compile Include="MyAggregate.cs" />
-    <Compile Include="MyIterator.cs" />
+    <Compile Include="IterationSample.cs" />
+    <Compile Include="IterationSampleIterator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
