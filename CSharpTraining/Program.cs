@@ -11,22 +11,51 @@ namespace CSharpTraining
 {
     class Program
     {
-        public static IEnumerable<string> ReadLines(string filename)
+        private static IEnumerable<string> ReadLines(string filename)
         {
             using (TextReader reader = File.OpenText(filename))
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                try {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        yield return line;
+                    }
+                }
+                finally
                 {
-                    yield return line;
+                    reader.Close();
+                    Console.WriteLine("file closed");
+                }
+            }
+        }
+
+        private static IEnumerable<T> Where<T>(IEnumerable<T> source, Predicate<T> predicate)
+        {
+            if (source == null || predicate == null)
+            {
+                throw new ArgumentNullException();
+            }
+            return WhereImpl(source, predicate);
+        }
+
+        private static IEnumerable<T> WhereImpl<T>(IEnumerable<T> source, Predicate<T> predicate)
+        {
+            foreach (T item in source)
+            {
+                if (predicate(item))
+                {
+                    yield return item;
                 }
             }
         }
 
         public static void Main(string[] args)
         {
+            IEnumerable<string> lines = ReadLines(@"..\..\TextFile1.txt");
+            Predicate<string> predicate = delegate (string line) { return line.StartsWith("using"); };
 
-            foreach (string line in ReadLines(@"..\..\TextFile1.txt")) 
+            foreach (string line in Where(lines, predicate))
             {
                 Console.WriteLine(line);
             }
