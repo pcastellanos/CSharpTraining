@@ -10,19 +10,22 @@ namespace CSharpTraining
     public class IterationSample : IEnumerable
     {
 
-       public object[] Values { get; set; }
-        public int StartingPoint { get; set; }
+        private object[] values;
+        private int startingPoint;
 
         public IterationSample(object[] values, int startingPoint)
         {
-            this.Values = values;
-            this.StartingPoint = startingPoint;
+            this.values = values;
+            this.startingPoint = startingPoint;
         }
-        
+
+        //You can use Generic to required the the type in the yield return stament  
         public IEnumerator GetEnumerator()
         {
-            //throw new NotImplementedException();
-            return new IterationSampleIterator(this);
+            for (int index = 0; index < values.Length; index++)
+            {
+                yield return values[(index + startingPoint) % values.Length];
+            }
         }
     }
 }
