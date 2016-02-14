@@ -34,14 +34,12 @@ namespace CSharpTraining
         public static void Main(string[] args)
         {
             DateTime stop = DateTime.Now.AddSeconds(2);
-            foreach (int i in CountWithTimeLimit(stop))
+            IEnumerable<int> enumerable = CountWithTimeLimit(stop);
+            enumerable.GetEnumerator().MoveNext();
+            enumerable.GetEnumerator().Reset();
+            foreach (int i in enumerable)
             {
                 Console.WriteLine("Received {0}", i);
-                if (i > 3)
-                {
-                    Console.WriteLine("Returning");
-                    return;
-                }
                 Thread.Sleep(300);
             }
 
