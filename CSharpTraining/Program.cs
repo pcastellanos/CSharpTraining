@@ -14,37 +14,35 @@ namespace CSharpTraining
     {
         public static void Main(string[] args)
         {
-            var query = from user in SampleData.AllUsers
-                        orderby user.Name.Length
-                        select user.Name;
-            foreach (var name in query)
+            var query = from defect in SampleData.AllDefects
+                        join subscription in SampleData.AllSubscriptions
+                        on defect.Project equals subscription.Project
+                        select new { defect.Summary, subscription.EmailAddress };
+
+            //var query = from subscription in SampleData.AllSubscriptions
+            //            join defect in SampleData.AllDefects
+            //            on subscription.Project equals defect.Project 
+            //            select new { defect.Summary, subscription.EmailAddress };
+
+            //var query = from defect in SampleData.AllDefects
+            //            where defect.Status == Status.Closed
+            //            join subscription in SampleData.AllSubscriptions
+            //            on defect.Project equals subscription.Project
+            //            select new { defect.Summary, subscription.EmailAddress };
+
+            //var query = from subscription in SampleData.AllSubscriptions
+            //join defect in (from defect in SampleData.AllDefects
+            //                where defect.Status == Status.Closed
+            //                select defect)
+            //on subscription.Project equals defect.Project
+            //select new { defect.Summary, subscription.EmailAddress };
+
+            foreach (var entry in query)
             {
-                Console.WriteLine("{0}: {1}", name.Length, name);
+                Console.WriteLine("{0}: {1}", entry.EmailAddress, entry.Summary);
             }
             Console.ReadLine();
-
-            //Console.WriteLine("Using let");
-            //var users = from user in SampleData.AllUsers
-            //            let length = user.Name.Length
-            //            orderby length
-            //            select new { Name = user.Name, Length = length };
-
-            //foreach (var user in users)
-            //{
-            //    Console.WriteLine("{0}: {1}", user.Length, user.Name);
-            //}
-            //Console.ReadLine();
-
-            //translated
-            //var resultUsers = SampleData.AllUsers.Select(user => new { user, length = user.Name.Length })
-            //        .OrderBy(user => user.length)
-            //        .Select(anonymousUser => new { Name = anonymousUser.user.Name, Length = anonymousUser.length });
-
-            //foreach (var user in resultUsers)
-            //{
-            //    Console.WriteLine("{0}: {1}", user.Length, user.Name);
-            //}
-            //Console.ReadLine();
+            
         }       
     }
 }
