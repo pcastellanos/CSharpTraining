@@ -15,34 +15,27 @@ namespace CSharpTraining
         
         public static void Main(string[] args)
         {
-            ArrayList list = new ArrayList { "First", "Second", "Third", 1 };
-            IEnumerable<string> strings = list.Cast<string>();
-
-            var strResult = from str in strings
-                            //from string str in list
-                            where str.Contains("i")
-                            select str;
-
-            foreach (string item in strResult)
+            User tim = SampleData.Users.TesterTim;
+            var results = from defect in SampleData.AllDefects
+                        where defect.Status != Status.Closed
+                        where defect.AssignedTo == tim
+                        select defect.Summary;
+            foreach (var summary in results)
             {
-                Console.WriteLine(item);
+                Console.WriteLine(summary);
             }
-
-            list = new ArrayList { 1, "not an int", 2, 3, 5, 6, 7, 20 };
-            IEnumerable<int> ints = list.OfType<int>();
-
-            var result = from number in ints
-                         where number % 2 == 0
-                         select number;
-
-            foreach (int item in result)
+            Console.ReadLine();
+            //The query expression is translated into this
+            IEnumerable<string> summaries = SampleData.AllDefects.Where(defect => defect.Status != Status.Closed)
+                                                                 .Where(defect => defect.AssignedTo == tim)
+                                                                 .Select(defect => defect.Summary);
+            foreach (var summary in summaries)
             {
-                Console.WriteLine(item);
+                Console.WriteLine(summary);
             }
-
             Console.ReadLine();
 
-          
+
         }
 
 
