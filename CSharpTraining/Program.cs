@@ -10,46 +10,39 @@ using System.Xml.Linq;
 
 namespace CSharpTraining
 {
-    static class Extensions
-    {
-        public static Dummy<T> Where<T>(this Dummy<T> dummy,
-                                        Func<T, bool> predicate)
-        {
-            Console.WriteLine("Where called");
-            return dummy;
-        }
-    }
-
-    class Dummy<T>
-    {
-        public Dummy<U> Select<U>(Func<T, U> selector)
-        {
-            Console.WriteLine("Select called");
-            return new Dummy<U>();
-        }
-    }
-
     class Program
     {
         
         public static void Main(string[] args)
         {
-            var query = from user in SampleData.AllUsers
-                        select user;
-            foreach (var user in query)
+            ArrayList list = new ArrayList { "First", "Second", "Third", 1 };
+            IEnumerable<string> strings = list.Cast<string>();
+
+            var strResult = from str in strings
+                            //from string str in list
+                            where str.Contains("i")
+                            select str;
+
+            foreach (string item in strResult)
             {
-                Console.WriteLine(user);
+                Console.WriteLine(item);
             }
+
+            list = new ArrayList { 1, "not an int", 2, 3, 5, 6, 7, 20 };
+            IEnumerable<int> ints = list.OfType<int>();
+
+            var result = from number in ints
+                         where number % 2 == 0
+                         select number;
+
+            foreach (int item in result)
+            {
+                Console.WriteLine(item);
+            }
+
             Console.ReadLine();
 
-            //var source = new Dummy<string>();
-
-            //var result = from dummy in source
-            //            where dummy.ToString() == "Ignored"
-            //            select "Anything";
-
-            //Console.ReadLine();
-
+          
         }
 
 
