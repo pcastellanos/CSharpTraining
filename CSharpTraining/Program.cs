@@ -14,44 +14,31 @@ namespace CSharpTraining
     {
         public static void Main(string[] args)
         {
-            var query = from defect in SampleData.AllDefects
-                        where defect.Status == Status.Closed
-                        join subscription in SampleData.AllSubscriptions
-                        on defect.Project equals subscription.Project
-                        into groupedSubscriptions
-                        select new
-                        {
-                            Defect = defect,
-                            Subscriptions = groupedSubscriptions
-                        };
-            foreach (var entry in query)
+            var query = from user in SampleData.AllUsers
+                        from project in SampleData.AllProjects
+                        select new { User = user, Project = project };
+            foreach (var pair in query)
             {
-                Console.WriteLine(entry.Defect.Summary);
-                foreach (var subscription in entry.Subscriptions)
-                {
-                    Console.WriteLine(" {0}", subscription.EmailAddress);
-                }
-            }
-            Console.ReadLine();
-
-            var dates = new DateTimeRange(SampleData.Start, SampleData.End);
-            //var results = from date in dates
-            //            join defect in SampleData.AllDefects 
-            //            on date equals defect.Created.Date
-            //            into defectDates
-            //            select new { Date = date, Count = defectDates.Count() };
-
-            var results = dates.GroupJoin(SampleData.AllDefects, 
-                                         date => date, 
-                                         defect => defect.Created.Date, 
-                                         (date, joined) => new { Date = date, Count = joined.Count() });
-            foreach (var grouped in results)
-            {
-                Console.WriteLine("{0:d}: {1}", grouped.Date, grouped.Count);
+                Console.WriteLine("{0}/{1}",
+                pair.User.Name,
+                pair.Project.Name);
             }
 
             Console.ReadLine();
 
-        }       
+
+            //var list = from left in Enumerable.Range(1, 4)
+            //            from right in Enumerable.Range(11, left)
+            //            select new { Left = left, Right = right };
+            var list = Enumerable.Range(1, 4).SelectMany(left => Enumerable.Range(11, left),
+                                                        (left, right) => new { Left = left, Right = right });
+
+            foreach (var pair in list)
+            {
+                Console.WriteLine("Left={0}; Right={1}",
+                pair.Left, pair.Right);
+            }
+            Console.ReadLine();
+        }
     }
 }
