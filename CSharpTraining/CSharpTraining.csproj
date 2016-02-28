@@ -43,6 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Defect.cs" />
+    <Compile Include="Model\NotificationSubscription.cs" />
+    <Compile Include="Model\Project.cs" />
+    <Compile Include="Model\SampleData.cs" />
+    <Compile Include="Model\Severity.cs" />
+    <Compile Include="Model\StaticCounter.cs" />
+    <Compile Include="Model\Status.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\UserType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
