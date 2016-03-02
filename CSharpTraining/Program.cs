@@ -21,31 +21,29 @@ namespace CSharpTraining
                         {
                             Assignee = grouped.Key,
                             Count = grouped.Count()
-                        };
+                        } into result
+                        orderby result.Count 
+                        select result;
 
             foreach (var entry in query)
             {
                 Console.WriteLine("{0}: {1}",
-                entry.Assignee.Name, entry.Count);
+                entry.Assignee.Name,
+                entry.Count);
             }
-            
+
             Console.ReadLine();
-
-            //var defects = from grouped in (from defect in SampleData.AllDefects
-            //                               where defect.AssignedTo != null
-            //                               group defect by defect.AssignedTo)
-            //              select new { Assignee = grouped.Key, Count = grouped.Count() };
-
             var defects = SampleData.AllDefects.Where(defect => defect.AssignedTo != null)
-                                               .GroupBy(defect => defect.AssignedTo).
-                                               Select(grouped => new { Assignee = grouped.Key, Count = grouped.Count() });
+                                    .GroupBy(defect => defect.AssignedTo)
+                                    .Select(grouped => new {Assignee = grouped.Key,Count = grouped.Count()})
+                                    .OrderBy(result => result.Count);
 
             foreach (var entry in defects)
             {
                 Console.WriteLine("{0}: {1}",
-                entry.Assignee.Name, entry.Count);
+                entry.Assignee.Name,
+                entry.Count);
             }
-
             Console.ReadLine();
 
             
