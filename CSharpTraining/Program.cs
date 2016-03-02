@@ -14,30 +14,37 @@ namespace CSharpTraining
     {
         public static void Main(string[] args)
         {
-            var query = from user in SampleData.AllUsers
-                        from project in SampleData.AllProjects
-                        select new { User = user, Project = project };
-            foreach (var pair in query)
-            {
-                Console.WriteLine("{0}/{1}",
-                pair.User.Name,
-                pair.Project.Name);
-            }
+            var query = from defect in SampleData.AllDefects
+                        where defect.AssignedTo != null
+                        group defect by defect.AssignedTo;
 
+            foreach (var entry in query)
+            {
+                Console.WriteLine(entry.Key.Name);
+                foreach (var defect in entry)
+                {
+                    Console.WriteLine(" ({0}) {1}",
+                    defect.Severity, defect.Summary);
+                }
+                Console.WriteLine();
+            }
+            
             Console.ReadLine();
 
+            var defects =  SampleData.AllDefects.Where(defect => defect.AssignedTo != null)
+                                .GroupBy(defect => defect.AssignedTo, defect => defect);
 
-            //var list = from left in Enumerable.Range(1, 4)
-            //            from right in Enumerable.Range(11, left)
-            //            select new { Left = left, Right = right };
-            var list = Enumerable.Range(1, 4).SelectMany(left => Enumerable.Range(11, left),
-                                                        (left, right) => new { Left = left, Right = right });
-
-            foreach (var pair in list)
+            foreach (var entry in defects)
             {
-                Console.WriteLine("Left={0}; Right={1}",
-                pair.Left, pair.Right);
+                Console.WriteLine(entry.Key.Name);
+                foreach (var defect in entry)
+                {
+                    Console.WriteLine(" ({0}) {1}",
+                    defect.Severity, defect.Summary);
+                }
+                Console.WriteLine();
             }
+
             Console.ReadLine();
         }
     }
