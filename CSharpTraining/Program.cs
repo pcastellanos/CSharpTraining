@@ -6,25 +6,23 @@ namespace CSharpTraining
 {
     class Program
     {
-        public static void Main(string[] args)
+        static void Main()
         {
-            ShowInfo();
-            ShowInfo("LiesAndDamnedLies.java", -10);
-            NewCallerMember();
+            var instance = new MemberNames();
+            var instance2 = new MemberNames();
             Console.ReadLine();
 
-
+            dynamic x = new TypeUsedDynamically();
+            x.ShowCaller();
+            Console.ReadLine();
         }
-
-        private static void NewCallerMember()
+        
+        class TypeUsedDynamically
         {
-            ShowInfo();
+            internal void ShowCaller([CallerMemberName] string caller = "Unknown")
+            {
+                Console.WriteLine("Called by: {0}", caller);
+            }
         }
-
-        static void ShowInfo([CallerFilePath] string file = null, [CallerLineNumber] int line = 0, [CallerMemberName] string member = null)
-        {
-            Console.WriteLine("{0}:{1} - {2}", file, line, member);
-        }
-
     }
 }
