@@ -1,6 +1,7 @@
 ﻿using System;
 using static System.Console;
-using static CSharpTraining.Util; 
+using static CSharpTraining.Util;
+using System.Collections.Generic;
 
 namespace CSharpTraining
 {
@@ -8,14 +9,34 @@ namespace CSharpTraining
     {
         static void Main()
         {
-            string name = "Sammy Jenkins";
-            double salary = 1000;
+            //before
+            Dictionary<string, string> alien = new Dictionary<string, string>()
+            {
+                { "Name", "Fizzy"},
+                { "Planet", "Kepler-452b"}
+            };
+            PrintDict(alien);
 
-            WriteLine($"{name}'s monthly salary is {salary:C2}");
-            WriteLine($"Man! This {name} is kind of a { (salary >= 1000 ? "rich guy" : "poor guy")}");
-            WriteLine($"Using methods {Test()}");
+            ReadLine();
+
+            //C#6
+            alien = new Dictionary<string, string>()
+            {
+                ["Name"] = "Fizzy",
+                ["Planet"] = "Kepler-452b"
+            };
+
+            PrintDict(alien);
+
             ReadLine();
         }
-        
+
+        private static void PrintDict(Dictionary<string, string> alien)
+        {
+            foreach (KeyValuePair<string, string> keyValuePair in alien)
+            {
+                WriteLine($"{keyValuePair.Key}:{keyValuePair.Value}");
+            }
+        }
     }
 }
