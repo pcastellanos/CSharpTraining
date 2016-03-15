@@ -11,25 +11,26 @@ namespace CSharpTraining
     {
         static void Main(string[] args)
         {
-            SuperHero hero = null;
-
-            //old syntax of checking if an instance is null or not 
-            WriteLine(hero != null ? hero.SuperPower : "You aint a super hero.");
-
-            //Using new operator
-            WriteLine(hero?.SuperPower ?? "You aint a super hero.");
-
-            //using lists
-
-            List<SuperHero> superHeroes = null;
-            WriteLine(superHeroes?[0].SuperPower ?? "There is no such thing as super heros.");
+            Person person = new Person();
+            WriteLine("I'm " + person.FullName);
+            WriteLine(person.BuySomething(100));
+            WriteLine(Person.AddNumber(2,3));
             ReadLine();
         }
         
     }
-    public class SuperHero
+    public class Person
     {
-        public string SuperPower { get; set; } = "Run faster";
+        public string FirstName { get; } = "Fiyaz";
+        public string LastName { get; } = "Hasan";
+
+        public int Salary { get; private set; } = 3000000;
+        /* Expression bodied function */
+        public int BuySomething(int price) => Salary -= price;
+        public static int AddNumber(int x, int y) => x + y;
+        
+        /* Expression bodied computed property */
+        public string FullName => $"{FirstName} {LastName}";
     }
 }
 
