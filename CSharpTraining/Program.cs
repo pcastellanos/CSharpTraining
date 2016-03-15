@@ -11,40 +11,25 @@ namespace CSharpTraining
     {
         static void Main(string[] args)
         {
-            Task.Factory.StartNew(() => GetWeather());
-            ReadKey();
+            SuperHero hero = null;
+
+            //old syntax of checking if an instance is null or not 
+            WriteLine(hero != null ? hero.SuperPower : "You aint a super hero.");
+
+            //Using new operator
+            WriteLine(hero?.SuperPower ?? "You aint a super hero.");
+
+            //using lists
+
+            List<SuperHero> superHeroes = null;
+            WriteLine(superHeroes?[0].SuperPower ?? "There is no such thing as super heros.");
+            ReadLine();
         }
-
-        private async static Task GetWeather()
-        {
-            HttpClient client = new HttpClient();
-            try
-            {
-                WriteLine("start try");
-                var result = await client.GetStringAsync
-                ("http://api.openweathermap.org/data/2.5/weather?q=Dhaka,bd");
-                WriteLine(result);
-            }
-            catch (Exception exception)
-            {
-                try
-                {
-                    /* If the first request throws an exception, 
-                	this request will be executed. 
-                        Both are asynchronous request to a weather service*/
-
-                    var result = await client.GetStringAsync
-                    ("http://api.openweathermap.org/data/2.5/weather?q=NewYork,us");
-
-                    WriteLine(result);
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-            }
-        }
-
+        
+    }
+    public class SuperHero
+    {
+        public string SuperPower { get; set; } = "Run faster";
     }
 }
 
