@@ -1,7 +1,7 @@
 ﻿using System;
-using static System.Console;
-using static CSharpTraining.Util;
 using System.Collections.Generic;
+using static CSharpTraining.Util;
+using static System.Console;
 
 namespace CSharpTraining
 {
@@ -9,32 +9,51 @@ namespace CSharpTraining
     {
         static void Main(string[] args)
         {
-            EmployeeBefore employee = new EmployeeBefore();
-            WriteLine($"Name: {employee.Name } Salary:{employee.Salary}");
-            ReadKey();
-            EmployeeAfter employeeAfter = new EmployeeAfter();
-            WriteLine($"Name: {employeeAfter.Name } Salary:{employeeAfter.Salary}");
-            ReadKey();
-        }
-       
-    }
-    public class EmployeeBefore
-    {
-        public string Name { get; set; }
-        public decimal Salary { get; set; }
-        public EmployeeBefore()
-        {
-            /* Initializing property through constructor */
-            Name = "Sammy Jenkins";
-            Salary = 10000;
-        }
-    }
+            //before
+            try
+            {
+                CallSomething();
+            }
+            catch (Exception exception)
+            {
+                WriteLine(exception.Message);
+            }
+            ReadLine();
+            //After
+            try
+            {
+                CallSomethingNew();
+            }
+            catch (Exception exception)
+            {
+                WriteLine(exception.Message);
+            }
 
-    public class EmployeeAfter
-    {
-        public string Name { get; set; } = "Sammy Jenkins";
-        public decimal Salary { get; set; } = 10000;
-      
+            ReadLine();
+        }
+        //before
+        private static void CallSomething()
+        {
+            int? number = null;
+
+            if (number == null) 
+            {
+                //x is the type name. What if someone changes the type name from x to i ? The exception below would be inappropriate.
+                throw new Exception("x is null");
+            }
+        }
+
+        //after
+        private static void CallSomethingNew()
+        {
+            int? number = null;
+
+            if (number == null)
+            {
+                throw new Exception($"{nameof(number)} is null");
+            }
+        }
+
     }
 }
 
