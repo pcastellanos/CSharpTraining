@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using static CSharpTraining.Util;
 using static System.Console;
 
@@ -9,48 +11,37 @@ namespace CSharpTraining
     {
         static void Main(string[] args)
         {
-            //before
+            Task.Factory.StartNew(() => GetWeather());
+            ReadKey();
+        }
+
+        private async static Task GetWeather()
+        {
+            HttpClient client = new HttpClient();
             try
             {
-                CallSomething();
+                WriteLine("start try");
+                var result = await client.GetStringAsync
+                ("http://api.openweathermap.org/data/2.5/weather?q=Dhaka,bd");
+                WriteLine(result);
             }
             catch (Exception exception)
             {
-                WriteLine(exception.Message);
-            }
-            ReadLine();
-            //After
-            try
-            {
-                CallSomethingNew();
-            }
-            catch (Exception exception)
-            {
-                WriteLine(exception.Message);
-            }
+                try
+                {
+                    /* If the first request throws an exception, 
+                	this request will be executed. 
+                        Both are asynchronous request to a weather service*/
 
-            ReadLine();
-        }
-        //before
-        private static void CallSomething()
-        {
-            int? number = null;
+                    var result = await client.GetStringAsync
+                    ("http://api.openweathermap.org/data/2.5/weather?q=NewYork,us");
 
-            if (number == null) 
-            {
-                //x is the type name. What if someone changes the type name from x to i ? The exception below would be inappropriate.
-                throw new Exception("x is null");
-            }
-        }
-
-        //after
-        private static void CallSomethingNew()
-        {
-            int? number = null;
-
-            if (number == null)
-            {
-                throw new Exception($"{nameof(number)} is null");
+                    WriteLine(result);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
         }
 
