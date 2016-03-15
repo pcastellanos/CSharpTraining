@@ -7,36 +7,34 @@ namespace CSharpTraining
 {
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
-            //before
-            Dictionary<string, string> alien = new Dictionary<string, string>()
-            {
-                { "Name", "Fizzy"},
-                { "Planet", "Kepler-452b"}
-            };
-            PrintDict(alien);
-
-            ReadLine();
-
-            //C#6
-            alien = new Dictionary<string, string>()
-            {
-                ["Name"] = "Fizzy",
-                ["Planet"] = "Kepler-452b"
-            };
-
-            PrintDict(alien);
-
-            ReadLine();
+            EmployeeBefore employee = new EmployeeBefore();
+            WriteLine($"Name: {employee.Name } Salary:{employee.Salary}");
+            ReadKey();
+            EmployeeAfter employeeAfter = new EmployeeAfter();
+            WriteLine($"Name: {employeeAfter.Name } Salary:{employeeAfter.Salary}");
+            ReadKey();
         }
-
-        private static void PrintDict(Dictionary<string, string> alien)
+       
+    }
+    public class EmployeeBefore
+    {
+        public string Name { get; set; }
+        public decimal Salary { get; set; }
+        public EmployeeBefore()
         {
-            foreach (KeyValuePair<string, string> keyValuePair in alien)
-            {
-                WriteLine($"{keyValuePair.Key}:{keyValuePair.Value}");
-            }
+            /* Initializing property through constructor */
+            Name = "Sammy Jenkins";
+            Salary = 10000;
         }
     }
+
+    public class EmployeeAfter
+    {
+        public string Name { get; set; } = "Sammy Jenkins";
+        public decimal Salary { get; set; } = 10000;
+      
+    }
 }
+
