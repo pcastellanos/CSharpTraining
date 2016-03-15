@@ -8,11 +8,12 @@ namespace CSharpTraining
     {
         static void Main()
         {
-            Console.WriteLine("with Console");
-            Console.ReadLine();
+            string name = "Sammy Jenkins";
+            double salary = 1000;
 
-            WriteLine("without Console");
-            WriteLine(Test());
+            WriteLine($"{name}'s monthly salary is {salary:C2}");
+            WriteLine($"Man! This {name} is kind of a { (salary >= 1000 ? "rich guy" : "poor guy")}");
+            WriteLine($"Using methods {Test()}");
             ReadLine();
         }
         
