@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using static System.Console;
+using static CSharpTraining.Util; 
 
 namespace CSharpTraining
 {
@@ -8,25 +8,13 @@ namespace CSharpTraining
     {
         static void Main()
         {
-            var instance = new MemberNames();
-            var instance2 = new MemberNames();
+            Console.WriteLine("with Console");
             Console.ReadLine();
 
-            dynamic x = new TypeUsedDynamically();
-            x.ShowCaller();
-            Console.ReadLine();
-
-            var attribute = (MemberDescriptionAttribute)typeof(MemberNames).GetCustomAttributes(typeof(MemberDescriptionAttribute), false)[0];
-            Console.WriteLine("Attribute on type: {0} total: {1}", attribute.Member);
-            Console.ReadLine();
+            WriteLine("without Console");
+            WriteLine(Test());
+            ReadLine();
         }
         
-        class TypeUsedDynamically
-        {
-            internal void ShowCaller([CallerMemberName] string caller = "Unknown")
-            {
-                Console.WriteLine("Called by: {0}", caller);
-            }
-        }
     }
 }
