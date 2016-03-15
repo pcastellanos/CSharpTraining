@@ -15,7 +15,6 @@ namespace CSharpTraining
             Log("Static constructor");
         }
 
-        
         static string foo = Log("Static variable initializer (foo)");
 
         string bar = Log("Instance variable initializer (bar)");

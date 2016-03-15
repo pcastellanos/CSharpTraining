@@ -15,6 +15,10 @@ namespace CSharpTraining
             dynamic x = new TypeUsedDynamically();
             x.ShowCaller();
             Console.ReadLine();
+
+            var attribute = (MemberDescriptionAttribute)typeof(MemberNames).GetCustomAttributes(typeof(MemberDescriptionAttribute), false)[0];
+            Console.WriteLine("Attribute on type: {0} total: {1}", attribute.Member);
+            Console.ReadLine();
         }
         
         class TypeUsedDynamically
