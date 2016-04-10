@@ -8,40 +8,25 @@ namespace CSharpTraining
     {
         public static void Main()
         {
-            Task<string> task = Task.Run(() =>
+            //Task finishes when all three children are finished.
+            Task<int[]> parent = Task.Run(() =>
             {
-                for (int x = 0; x < 100; x++)
-                {
-                    Console.WriteLine($"{x}");
-                }
-                
-                return "The task was completed";
+                var results = new int[3];
+                new Task(() => results[0] = 0,
+                TaskCreationOptions.AttachedToParent).Start();
+                new Task(() => results[1] = 1,
+                TaskCreationOptions.AttachedToParent).Start();
+                new Task(() => results[2] = 2,
+                TaskCreationOptions.AttachedToParent).Start();
+                return results;
+            });
+            var finalTask = parent.ContinueWith(
+            parentTask => {
+                foreach (int i in parentTask.Result)
+                    Console.WriteLine(i);
+            });
+            finalTask.Wait();
 
-            }).ContinueWith((resultPreviousExecution) =>{
-                //throw new Exception();
-                return $"{resultPreviousExecution.Result} after task continue";
-                });
-
-            task.ContinueWith((resultPreviousExecution) =>
-            {
-                Console.WriteLine("Canceled");
-            }, TaskContinuationOptions.OnlyOnCanceled);
-
-            task.ContinueWith((resultPreviousExecution) =>
-            {
-                Console.WriteLine("Faulted");
-            }, TaskContinuationOptions.OnlyOnFaulted);
-
-            var completedTask = task.ContinueWith((resultPreviousExecution) =>
-            {
-                Console.WriteLine("Completed");
-            }, TaskContinuationOptions.OnlyOnRanToCompletion);
-            
-
-            //Wait until the task is done is like Thread.Join
-            task.Wait();
-
-            Console.WriteLine($"{task.Result}");
             Console.ReadLine();
 
         }
