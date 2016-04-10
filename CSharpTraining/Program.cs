@@ -3,42 +3,32 @@ using System.Threading;
 
 namespace CSharpTraining
 {
-    class Program
+    public static class Program
     {
-        [ThreadStatic]
-        public static int field;
+        public static ThreadLocal<int> _field = new ThreadLocal<int>(() =>{ return Thread.CurrentThread.ManagedThreadId;});
         public static void Main()
         {
-            field = 5;
-            Console.WriteLine("initial state to Field {0}", field);
-
             new Thread(() =>
             {
-                for (int x = 0; x < 10; x++)
+                Console.WriteLine($"Thread A: _field.Value {_field.Value}");
+                for (int x = 0; x < _field.Value; x++)
                 {
-                    field++;
-                    Console.WriteLine("Thread A: {0}", field);
-                    Thread.Sleep(1000);
+                    Console.WriteLine("Thread A: {0}", x);
+                }
+            }).Start();
+            
+            new Thread(() =>
+            {
+                Console.WriteLine($"Thread B: _field.Value {_field.Value}");
+                for (int x = 0; x < _field.Value; x++)
+                {
+                    Console.WriteLine("--------->Thread B: {0}", x);
                 }
             }).Start();
 
-            new Thread(() =>
-            {
-                for (int x = 0; x < 10; x++)
-                {
-                    field++;
-                    Console.WriteLine("---->Thread B: {0}", field);
-                    Thread.Sleep(500);
-                }
-            }).Start();
-
-            Console.ReadLine();
-            Console.WriteLine("final state to Field {0}", field);
-            Console.ReadLine();
+            Console.ReadKey();
         }
     }
-
-
 }
 
 
