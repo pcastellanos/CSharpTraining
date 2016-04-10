@@ -11,41 +11,28 @@ namespace CSharpTraining
     {
         public static void Main()
         {
-            StackMethod();
-            Console.ReadLine();
-            QueueMethod();
-            Console.ReadLine();
+            var dict = new ConcurrentDictionary<string, int>();
+            if (dict.TryAdd("k1", 42))
+            {
+                Console.WriteLine("Added");
+            }
+            if (dict.TryUpdate("k1", 21, 42))
+            {
+                Console.WriteLine("42 updated to 21");
+            }
+            dict["k1"] = 42; // Overwrite unconditionally
+            int r1 = dict.AddOrUpdate("k1", 3, (s, i) => i * 2);
 
-        }
-
-        private static void StackMethod()
-        {
-            Console.WriteLine("StackMethod");
-            ConcurrentStack <int> stack = new ConcurrentStack<int>();
-            stack.Push(42);
-            int result;
-
-            if (stack.TryPop(out result))
-                Console.WriteLine($"Popped: {result}");
-
-            stack.PushRange(new int[] { 1, 2, 3 });
-            int[] values = new int[2];
-
-            stack.TryPopRange(values);
-
-            foreach (int i in values)
+            int r2 = dict.GetOrAdd("k2", 3); 
+            foreach(int i in dict.Values)
+            {
                 Console.WriteLine(i);
+            }
+
+            Console.ReadLine();
+
         }
 
-        private static void QueueMethod()
-        {
-            Console.WriteLine("QueueMethod");
-            ConcurrentQueue<int> queue = new ConcurrentQueue<int>();
-            queue.Enqueue(42);
-            int result;
-            if (queue.TryDequeue(out result))
-                Console.WriteLine($"Dequeued: {result}");
-        }
     }
 }
 
