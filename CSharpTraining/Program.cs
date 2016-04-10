@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,42 +10,24 @@ namespace CSharpTraining
     {
         public static void Main()
         {
-            FuncForForEach();
-            TestBreakStop();
-            Console.WriteLine("Parallel is done");
+            string result = DownloadContent().Result;
+
+            Console.WriteLine(result);
             Console.ReadLine();
         }
-
-        private static void TestBreakStop()
+        public static async Task<string> DownloadContent()
         {
-            ParallelLoopResult result = Parallel.For(0, 1000, (int i, ParallelLoopState loopState) =>
+            using (HttpClient client = new HttpClient())
             {
-                if (i == 500)
+                Task<string> taskResult =  client.GetStringAsync("http://www.microsoft.com");
+                for (int i = 0; i < 1000; i++)
                 {
-                    Console.WriteLine("STOP loop");
-                    loopState.Break();
+                    Console.WriteLine($"{i}");
                 }
-                return;
-            });
-
-            Console.WriteLine($"IsCompleted: {result.IsCompleted}, LowestBreakIteration {result.LowestBreakIteration}");
-        }
-
-        private static void FuncForForEach()
-        {
-            Parallel.For(0, 10, i =>
-            {
-                Console.WriteLine($"For{i}");
-                Thread.Sleep(1000);
-            });
-
-
-            var numbers = Enumerable.Range(0, 10);
-            Parallel.ForEach(numbers, i =>
-            {
-                Console.WriteLine($"Foreach{i}");
-                Thread.Sleep(1000);
-            });
+                string result = await taskResult;
+                
+                return result;
+            }
         }
     }
 }
