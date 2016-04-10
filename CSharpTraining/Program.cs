@@ -5,36 +5,39 @@ namespace CSharpTraining
 {
     class Program
     {
+        [ThreadStatic]
+        public static int field;
         public static void Main()
         {
-            Thread thread = new Thread(new ParameterizedThreadStart(ThreadMethod));
-            thread.Start(15);
-            thread.Join();
-            Console.WriteLine("The thread stopped");
-            Console.ReadLine();
-        }
+            field = 5;
+            Console.WriteLine("initial state to Field {0}", field);
 
-        public static void ThreadMethod(object o)
-        {
-            bool stopped = false;
-
-            Thread trheadForeground = new Thread(new ThreadStart(() =>
+            new Thread(() =>
             {
-                while (!stopped)
+                for (int x = 0; x < 10; x++)
                 {
-                    Console.WriteLine("Running...");
+                    field++;
+                    Console.WriteLine("Thread A: {0}", field);
                     Thread.Sleep(1000);
                 }
-            }));
-            trheadForeground.Start();
-            Console.WriteLine("Press any key to exit");
-            Console.ReadKey();
-            stopped = true;
-            trheadForeground.Join();
-            
+            }).Start();
+
+            new Thread(() =>
+            {
+                for (int x = 0; x < 10; x++)
+                {
+                    field++;
+                    Console.WriteLine("---->Thread B: {0}", field);
+                    Thread.Sleep(500);
+                }
+            }).Start();
+
+            Console.ReadLine();
+            Console.WriteLine("final state to Field {0}", field);
+            Console.ReadLine();
         }
     }
-    
+
 
 }
 
