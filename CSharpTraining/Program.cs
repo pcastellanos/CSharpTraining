@@ -10,19 +10,40 @@ namespace CSharpTraining
         {
             Task<string> task = Task.Run(() =>
             {
-                for (int x = 0; x < 10000; x++)
+                for (int x = 0; x < 100; x++)
                 {
                     Console.WriteLine($"{x}");
                 }
+                
                 return "The task was completed";
 
-            });
+            }).ContinueWith((resultPreviousExecution) =>{
+                //throw new Exception();
+                return $"{resultPreviousExecution.Result} after task continue";
+                });
+
+            task.ContinueWith((resultPreviousExecution) =>
+            {
+                Console.WriteLine("Canceled");
+            }, TaskContinuationOptions.OnlyOnCanceled);
+
+            task.ContinueWith((resultPreviousExecution) =>
+            {
+                Console.WriteLine("Faulted");
+            }, TaskContinuationOptions.OnlyOnFaulted);
+
+            var completedTask = task.ContinueWith((resultPreviousExecution) =>
+            {
+                Console.WriteLine("Completed");
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            
+
             //Wait until the task is done is like Thread.Join
             task.Wait();
 
-            Console.WriteLine($"{task.Result}"); 
+            Console.WriteLine($"{task.Result}");
             Console.ReadLine();
-           
+
         }
     }
 }
