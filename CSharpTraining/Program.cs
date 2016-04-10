@@ -1,32 +1,28 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CSharpTraining
 {
     public static class Program
     {
-        public static ThreadLocal<int> _field = new ThreadLocal<int>(() =>{ return Thread.CurrentThread.ManagedThreadId;});
         public static void Main()
         {
-            new Thread(() =>
+            Task<string> task = Task.Run(() =>
             {
-                Console.WriteLine($"Thread A: _field.Value {_field.Value}");
-                for (int x = 0; x < _field.Value; x++)
+                for (int x = 0; x < 10000; x++)
                 {
-                    Console.WriteLine("Thread A: {0}", x);
+                    Console.WriteLine($"{x}");
                 }
-            }).Start();
-            
-            new Thread(() =>
-            {
-                Console.WriteLine($"Thread B: _field.Value {_field.Value}");
-                for (int x = 0; x < _field.Value; x++)
-                {
-                    Console.WriteLine("--------->Thread B: {0}", x);
-                }
-            }).Start();
+                return "The task was completed";
 
-            Console.ReadKey();
+            });
+            //Wait until the task is done is like Thread.Join
+            task.Wait();
+
+            Console.WriteLine($"{task.Result}"); 
+            Console.ReadLine();
+           
         }
     }
 }
