@@ -9,55 +9,42 @@ namespace CSharpTraining
     {
         public static void Main()
         {
-            TaskWaitAll();
-            TaskWaitAny();
+            FuncForForEach();
+            TestBreakStop();
+            Console.WriteLine("Parallel is done");
             Console.ReadLine();
         }
 
-        private static void TaskWaitAll()
+        private static void TestBreakStop()
         {
-            Task[] tasks = new Task[3];
-            tasks[0] = Task.Run(() =>
+            ParallelLoopResult result = Parallel.For(0, 1000, (int i, ParallelLoopState loopState) =>
             {
-                Thread.Sleep(1000);
-                Console.WriteLine("1");
-                return 1;
+                if (i == 500)
+                {
+                    Console.WriteLine("STOP loop");
+                    loopState.Break();
+                }
+                return;
             });
-            tasks[1] = Task.Run(() =>
-            {
-                Thread.Sleep(5000);
-                Console.WriteLine("2");
-                return 2;
-            });
-            tasks[2] = Task.Run(() =>
-            {
-                Thread.Sleep(1000);
-                Console.WriteLine("3");
-                return 3;
-            }
-            );
-            Task.WaitAll(tasks);
 
-            Console.WriteLine("Tasks are done");
+            Console.WriteLine($"IsCompleted: {result.IsCompleted}, LowestBreakIteration {result.LowestBreakIteration}");
         }
 
-        private static void TaskWaitAny()
+        private static void FuncForForEach()
         {
-            //The index of the completed Task object in the tasks array.
-            Task<int>[] tasks = new Task<int>[3];
-
-            tasks[0] = Task.Run(() => { Thread.Sleep(2000); return 1; });
-            tasks[1] = Task.Run(() => { Thread.Sleep(1000); return 2; });
-            tasks[2] = Task.Run(() => { Thread.Sleep(3000); return 3; });
-            while (tasks.Length > 0)
+            Parallel.For(0, 10, i =>
             {
-                int taskDone = Task.WaitAny(tasks);
-                Task<int> completedTask = tasks[taskDone];
-                Console.WriteLine(completedTask.Result);
-                var temp = tasks.ToList();
-                temp.RemoveAt(taskDone);
-                tasks = temp.ToArray();
-            }
+                Console.WriteLine($"For{i}");
+                Thread.Sleep(1000);
+            });
+
+
+            var numbers = Enumerable.Range(0, 10);
+            Parallel.ForEach(numbers, i =>
+            {
+                Console.WriteLine($"Foreach{i}");
+                Thread.Sleep(1000);
+            });
         }
     }
 }
