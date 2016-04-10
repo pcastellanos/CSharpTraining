@@ -11,27 +11,20 @@ namespace CSharpTraining
     {
         public static void Main()
         {
-            BlockingCollection<string> col = new BlockingCollection<string>();
-            Task read = Task.Run(() =>
+            ConcurrentBag<int> bag = new ConcurrentBag<int>();
+            Task.Run(() =>
             {
-                while (true)
-                {
-                    Thread.Sleep(500);
-                    Console.WriteLine("Dato ingresado: -------> "+col.Take());
-                }
+                bag.Add(42);
+                Thread.Sleep(1000);
+                bag.Add(21);
             });
 
-            Task write = Task.Run(() =>
+            Task.Run(() =>
             {
-                while (true)
-                {
-                    string s = Console.ReadLine();
-                    if (string.IsNullOrWhiteSpace(s)) break;
-                    col.Add(s);
-                }
-            });
+                foreach (int i in bag)
+                    Console.WriteLine(i);
+            }).Wait();
 
-            write.Wait();
             Console.ReadLine();
         }
     }
