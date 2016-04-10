@@ -7,21 +7,35 @@ namespace CSharpTraining
     {
         public static void Main()
         {
-            Thread t = new Thread(new ParameterizedThreadStart(ThreadMethod));
-            t.Start(15);
-            t.Join();
+            Thread thread = new Thread(new ParameterizedThreadStart(ThreadMethod));
+            thread.Start(15);
+            thread.Join();
+            Console.WriteLine("The thread stopped");
+            Console.ReadLine();
         }
 
-        public static void ThreadMethod(object obj)
+        public static void ThreadMethod(object o)
         {
-            int times = (int)obj;
-            for (int i = 0; i < times; i++)
-            {
-                Console.WriteLine("ThreadProc: {0}", i);
-                Thread.Sleep(1000);
-            }
-        }
+            bool stopped = false;
 
+            Thread trheadForeground = new Thread(new ThreadStart(() =>
+            {
+                while (!stopped)
+                {
+                    Console.WriteLine("Running...");
+                    Thread.Sleep(1000);
+                }
+            }));
+            trheadForeground.Start();
+            Console.WriteLine("Press any key to exit");
+            Console.ReadKey();
+            stopped = true;
+            trheadForeground.Join();
+            
+        }
     }
+    
+
 }
+
 
