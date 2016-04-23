@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace CSharpTraining
 {
-    interface ILeft
+    interface IExample
     {
-        void Move();
+        int this[string index] { get; set; }
+      
+        int Value { get;  }
+        event EventHandler ResultRetrieved;
+        string GetResult();
+
     }
-    interface IRight
-    {
-        void Move();
-    }
-  
+
 }
