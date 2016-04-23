@@ -8,35 +8,38 @@ namespace CSharpTraining
         public static void Main()
         {
 
-            Base b = new Base();
-            b.Execute();
-            Base b1 = new Derived();
-            b1.Execute();
-            Console.ReadLine();
-
-            Derived b2 = new Derived();
-            b2.Method();
+            Base b = new Derived();
+            b.MethodWithImplementation();
+            b.AbstractMethod();
             Console.ReadLine();
         }
 
     }
 
-    class Base
+    abstract class Base
     {
-        public void Execute() { Console.WriteLine("Base.Execute"); }
+        public virtual void MethodWithImplementation()
+        {
+            Console.WriteLine("MethodWithImplementation");
+        }
+        public abstract void AbstractMethod();
     }
-    class Derived : Base
+    sealed class Derived : Base
     {
-     
-        public void Method()
+        public override void MethodWithImplementation()
         {
-            this.Execute();
+            Console.WriteLine("MethodWithImplementation Derived ");
         }
-        public new void Execute()
+        public override void AbstractMethod()
         {
-            Console.WriteLine("Derived.Execute");
+            Console.WriteLine("AbstractMethod");
         }
     }
+
+    //class Derived2 : Derived
+    //{
+
+    //}
 
 }
 
