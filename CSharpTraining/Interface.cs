@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace CSharpTraining
 {
-    interface Interface1
+    interface ILeft
     {
-        void DoSomething();
+        void Move();
     }
+    interface IRight
+    {
+        void Move();
+    }
+  
 }

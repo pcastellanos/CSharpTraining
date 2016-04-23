@@ -1,4 +1,4 @@
-﻿using ProjectB;
+﻿
 using System;
 
 namespace CSharpTraining
@@ -8,12 +8,9 @@ namespace CSharpTraining
         public static void Main()
         {
 
-            Worker worker = new Worker(26, "calle 72", "Paula", "Castellanos");
-            Console.WriteLine(worker.Information());
-            Console.ReadLine();
-
-            Student student = new Student(26, "calle 72", "Alejandra", "Medina");
-            Console.WriteLine(student.Information());
+            MoveableOject obj = new MoveableOject();
+            ((ILeft)obj).Move();
+            ((IRight)obj).Move();
             Console.ReadLine();
 
         }
