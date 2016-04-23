@@ -14,7 +14,7 @@ namespace CSharpTraining
 
         public string Information()
         {
-            return $"{this.Name} {this.MyAge()} {MyAddress()}"; 
+            return $"{this.Name} {this.LastName} {this.MyAge()} {MyAddress()}"; 
         }
     }
 }
