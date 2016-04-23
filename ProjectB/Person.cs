@@ -34,5 +34,9 @@ namespace ProjectB
         {
             return $"My address is {Address}";
         }
+        public virtual string PublicMethod()
+        {
+            return "Hi";
+        }
     }
 }

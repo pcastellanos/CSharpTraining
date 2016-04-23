@@ -2,7 +2,7 @@
 
 namespace CSharpTraining
 {
-    public class Worker : Person
+    internal class Worker : Person
     {
         public Worker(int age, string address, string name, string lastName) : base(address, lastName)
         {
@@ -14,7 +14,7 @@ namespace CSharpTraining
 
         public string Information()
         {
-            return $"{this.Name} {this.LastName} {this.MyAge()} {MyAddress()}"; 
+            return $"{this.Name} {this.MyAge()} {MyAddress()}"; 
         }
     }
 }
