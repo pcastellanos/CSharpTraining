@@ -1,64 +1,63 @@
 ﻿
 using System;
 using System.IO;
+using System.Text;
 
 namespace CSharpTraining
 {
     public static class Program
     {
+        private static string path = $@"{Directory.GetCurrentDirectory()}\test.txt";
         public static void Main()
         {
-            Console.WriteLine("DELETE FILE");
-           ExampleDeletingFile();
-            Console.WriteLine("MOVE FILE");
-            ExampleMovingFile();
+           WrittingFile();
+           Console.WriteLine("Writting file is done");
+           Console.ReadLine();
+           ReadingFile();
         }
 
-        private static void ExampleMovingFile()
+        private static void ReadingFile()
         {
-            string fileName = "test.txt";
-            string fileName2 = "test2.txt";
-            string path = $@"{Directory.GetCurrentDirectory()}\test";
-            string destPath = $@"{Directory.GetCurrentDirectory()}\test\dest";
+            
+            Console.WriteLine("Reading with FileStream");
+            using (FileStream fileStream = File.OpenRead(path))
+            {
+                byte[] data = new byte[fileStream.Length];
+                for (int index = 0; index < fileStream.Length; index++)
+                {
+                    data[index] = (byte)fileStream.ReadByte();
+                }
+                Console.WriteLine(Encoding.UTF8.GetString(data)); // Displays: MyValue
+            }
 
-            if (!Directory.Exists(destPath))
-                Directory.CreateDirectory(destPath);
-
-            Console.WriteLine("Using File");
-            File.CreateText(Path.Combine(path,fileName)).Close();
             Console.ReadLine();
-            File.Copy(Path.Combine(path,fileName), Path.Combine(destPath,fileName));
-            Console.ReadLine();
-
-            Console.WriteLine("Using FileInfo");
-            FileInfo fileInfo = new FileInfo(Path.Combine(path, fileName2));
-            fileInfo.Create().Close();
-            Console.ReadLine();
-            fileInfo.CopyTo(Path.Combine(destPath, fileName2));
+            Console.WriteLine("Reading with StreamReader");
+            using (StreamReader streamWriter = File.OpenText(path))
+            {
+                Console.WriteLine(streamWriter.ReadLine()); // Displays: MyValue
+            }
             Console.ReadLine();
         }
 
-        private static void ExampleDeletingFile()
+        private static void WrittingFile()
         {
-            string path = $@"{Directory.GetCurrentDirectory()}\test.txt";
-            File.Create(path).Close();
-            Console.ReadLine();
-            if (File.Exists(path))
+            Console.WriteLine("Working with FileStream");
+            using (FileStream fileStream = File.Create(path))
             {
-                File.Delete(path);
+                string myValue = "MyValue";
+                byte[] data = Encoding.UTF8.GetBytes(myValue);
+                fileStream.Write(data, 0, data.Length);
             }
-            Console.WriteLine("File deleted using static class: File");
             Console.ReadLine();
 
-            FileInfo fileInfo = new FileInfo(path);
-            fileInfo.Create().Close();
-            Console.ReadLine();
-
-            if (fileInfo.Exists)
+            Console.WriteLine("Working with StreamWriter");
+            File.Delete(path);
+            using (StreamWriter streamWriter = File.CreateText(path))
             {
-                fileInfo.Delete();
+                string myValue = "MyValue";
+                
+                streamWriter.Write(myValue);
             }
-            Console.WriteLine("File deleted using class: FileInfo");
             Console.ReadLine();
         }
     }
