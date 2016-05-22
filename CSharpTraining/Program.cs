@@ -1,64 +1,61 @@
 ﻿
 using System;
 using System.IO;
+using System.IO.Compression;
+using System.Linq;
 using System.Text;
 
 namespace CSharpTraining
 {
     public static class Program
     {
-        private static string path = $@"{Directory.GetCurrentDirectory()}\test.txt";
         public static void Main()
         {
-           WrittingFile();
-           Console.WriteLine("Writting file is done");
-           Console.ReadLine();
-           ReadingFile();
-        }
-
-        private static void ReadingFile()
-        {
-            
-            Console.WriteLine("Reading with FileStream");
-            using (FileStream fileStream = File.OpenRead(path))
-            {
-                byte[] data = new byte[fileStream.Length];
-                for (int index = 0; index < fileStream.Length; index++)
-                {
-                    data[index] = (byte)fileStream.ReadByte();
-                }
-                Console.WriteLine(Encoding.UTF8.GetString(data)); // Displays: MyValue
-            }
-
+            UsingGZipStream();
             Console.ReadLine();
-            Console.WriteLine("Reading with StreamReader");
-            using (StreamReader streamWriter = File.OpenText(path))
-            {
-                Console.WriteLine(streamWriter.ReadLine()); // Displays: MyValue
-            }
+            UsingBufferedStream();
             Console.ReadLine();
         }
 
-        private static void WrittingFile()
+        private static void UsingBufferedStream()
         {
-            Console.WriteLine("Working with FileStream");
+            string path  = Path.Combine(Directory.GetCurrentDirectory(), "bufferedStream.txt");
             using (FileStream fileStream = File.Create(path))
             {
-                string myValue = "MyValue";
-                byte[] data = Encoding.UTF8.GetBytes(myValue);
-                fileStream.Write(data, 0, data.Length);
+                using (BufferedStream bufferedStream = new BufferedStream(fileStream))
+                {
+                    using (StreamWriter streamWriter = new StreamWriter(bufferedStream))
+                    {
+                        streamWriter.WriteLine("A line of text.");
+                    }
+                }
             }
-            Console.ReadLine();
+            Console.WriteLine("end of buffered example");
+        }
 
-            Console.WriteLine("Working with StreamWriter");
-            File.Delete(path);
-            using (StreamWriter streamWriter = File.CreateText(path))
+        private static void UsingGZipStream()
+        {
+            string folder = Directory.GetCurrentDirectory();
+            string uncompressedFilePath = Path.Combine(folder, "uncompressed.dat");
+            string compressedFilePath = Path.Combine(folder, "compressed.gz");
+            byte[] dataToCompress = Enumerable.Repeat((byte)'a', 1024 * 1024).ToArray();
+            using (FileStream uncompressedFileStream = File.Create(uncompressedFilePath))
             {
-                string myValue = "MyValue";
-                
-                streamWriter.Write(myValue);
+                uncompressedFileStream.Write(dataToCompress, 0, dataToCompress.Length);
             }
-            Console.ReadLine();
+
+            using (FileStream compressedFileStream = File.Create(compressedFilePath))
+            {
+                using (GZipStream compressionStream = new GZipStream(compressedFileStream, CompressionMode.Compress))
+                {
+                    compressionStream.Write(dataToCompress, 0, dataToCompress.Length);
+                }
+            }
+
+            FileInfo uncompressedFile = new FileInfo(uncompressedFilePath);
+            FileInfo compressedFile = new FileInfo(compressedFilePath);
+            Console.WriteLine(uncompressedFile.Length); // Displays 1048576
+            Console.WriteLine(compressedFile.Length); // Displays 1052
         }
     }
 }
