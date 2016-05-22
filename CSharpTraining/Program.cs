@@ -8,84 +8,58 @@ namespace CSharpTraining
     {
         public static void Main()
         {
-            Console.WriteLine("Working with DriveInfo");
-            ExampleDriveInfo();
-            Console.WriteLine("Working with DirectoryInfo or Directory");
-            ExampleDirectory();
+            Console.WriteLine("DELETE FILE");
+           ExampleDeletingFile();
+            Console.WriteLine("MOVE FILE");
+            ExampleMovingFile();
+        }
 
-            Console.WriteLine("Example finding directories with patterns");
-            DirectoryInfo directoryInfo = new DirectoryInfo(@"C:\Program Files");
-            ListDirectories(directoryInfo, "*a*", 5, 0);
+        private static void ExampleMovingFile()
+        {
+            string fileName = "test.txt";
+            string fileName2 = "test2.txt";
+            string path = $@"{Directory.GetCurrentDirectory()}\test";
+            string destPath = $@"{Directory.GetCurrentDirectory()}\test\dest";
+
+            if (!Directory.Exists(destPath))
+                Directory.CreateDirectory(destPath);
+
+            Console.WriteLine("Using File");
+            File.CreateText(Path.Combine(path,fileName)).Close();
+            Console.ReadLine();
+            File.Copy(Path.Combine(path,fileName), Path.Combine(destPath,fileName));
+            Console.ReadLine();
+
+            Console.WriteLine("Using FileInfo");
+            FileInfo fileInfo = new FileInfo(Path.Combine(path, fileName2));
+            fileInfo.Create().Close();
+            Console.ReadLine();
+            fileInfo.CopyTo(Path.Combine(destPath, fileName2));
             Console.ReadLine();
         }
 
-        private static void ExampleDirectory()
+        private static void ExampleDeletingFile()
         {
-            var directory = Directory.CreateDirectory(@"C:\ProgrammingInCSharp\Directory");
-            var directoryInfo = new DirectoryInfo(@"C:\ProgrammingInCSharp\DirectoryInfo");
-            directoryInfo.Create();
-            Console.WriteLine("Now delete the files");
+            string path = $@"{Directory.GetCurrentDirectory()}\test.txt";
+            File.Create(path).Close();
             Console.ReadLine();
-            if (Directory.Exists(@"C:\ProgrammingInCSharp\Directory"))
+            if (File.Exists(path))
             {
-                Directory.Delete(@"C:\ProgrammingInCSharp\Directory");
+                File.Delete(path);
             }
-
-            if (directoryInfo.Exists)
-            {
-                directoryInfo.Delete();
-            }
+            Console.WriteLine("File deleted using static class: File");
             Console.ReadLine();
 
-        }
-
-        private static void ExampleDriveInfo()
-        {
-            DriveInfo[] drivesInfo = DriveInfo.GetDrives();
-            foreach (DriveInfo driveInfo in drivesInfo)
-            {
-                Console.WriteLine($"Drive {driveInfo.Name}");
-                Console.WriteLine($"File type: {driveInfo.DriveType}");
-                if (driveInfo.IsReady == true)
-                {
-                    Console.WriteLine($"Volume label: {driveInfo.VolumeLabel}");
-                    Console.WriteLine($"File system: {driveInfo.DriveFormat}");
-                    Console.WriteLine($"Available space to current user:{(driveInfo.AvailableFreeSpace / 1024) / 1024} GB");
-                    Console.WriteLine($"Total available space: {(driveInfo.TotalFreeSpace / 1024) / 1024} GB");
-                    Console.WriteLine($"Total size of drive: {(driveInfo.TotalSize / 1024) / 1024} GB");
-                }
-            }
+            FileInfo fileInfo = new FileInfo(path);
+            fileInfo.Create().Close();
             Console.ReadLine();
-        }
 
-        private static void ListDirectories(DirectoryInfo directoryInfo, string searchPattern, int maxLevel, int currentLevel)
-        {
-            if (currentLevel >= maxLevel)
+            if (fileInfo.Exists)
             {
-                return;
+                fileInfo.Delete();
             }
-            string indent = new string('-', currentLevel);
-            try
-            {
-                DirectoryInfo[] subDirectories = directoryInfo.GetDirectories(searchPattern);
-                foreach (DirectoryInfo subDirectory in subDirectories)
-                {
-                    Console.WriteLine(indent + subDirectory.Name);
-                    ListDirectories(subDirectory, searchPattern, maxLevel, currentLevel + 1);
-                }
-            }
-            catch (UnauthorizedAccessException)
-            {
-                // You don’t have access to this folder.
-                Console.WriteLine($"{indent} Can't access: {directoryInfo.Name}");
-                return;
-            }
-            catch (DirectoryNotFoundException)
-            {
-                // The folder is removed while iterating
-                Console.WriteLine($"{indent} Can’t find: {directoryInfo.Name}");
-                return;
-            }
+            Console.WriteLine("File deleted using class: FileInfo");
+            Console.ReadLine();
         }
     }
 }
