@@ -1,4 +1,5 @@
 ﻿
+using CSharpTraining.WorkFlowEngine;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -12,13 +13,9 @@ namespace CSharpTraining
     {
         public static void Main()
         {
-            WebRequest request = WebRequest.Create("http://www.microsoft.com");
-            WebResponse response = request.GetResponse();
-            StreamReader responseStream = new StreamReader(response.GetResponseStream());
-            
-            string responseText = responseStream.ReadToEnd();
-            Console.WriteLine(responseText); // Displays the HTML of the website
-            response.Close();
+            WorkflowEngineSOASoap engine = new WorkflowEngineSOASoapClient();
+            engine.abortCasesAsString(Resource.xml);
+            Console.WriteLine("Aborted"); 
             Console.ReadLine();
         }
 
